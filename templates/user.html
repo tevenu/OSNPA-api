@@ -1,0 +1,100 @@
+<div class="layuimini-main welcome">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card" style="background-color: rgb(248, 252, 242);">
+                        <div class="layui-card-header"
+                             style="text-align: center; color: rgb(14, 88, 40); font-size: 25px;">微博社交平台隐私泄露风险警示系统
+                        </div>
+                        <div class="layui-card-body">
+                            <div class="layui-row layui-col-space10 layuimini-qiuck">
+                                <div class="layui-col-md6">
+                                    <div class="image-container" id="头像">
+                                        <img src="images/{{ profile.avatar }}" alt="图片">
+                                    </div>
+                                    <div class="image-caption" id="主页信息">
+                                        <p id="profile">
+                                            {{ profile.name }}<br>
+                                            {{ profile.verification }}<br>
+                                            粉丝：{{ profile.followers }}<br>
+                                            关注：{{ profile.follow }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md6" style="margin-top: 20px;" id="隐私信息">
+                                    <ul>
+                                        <li>
+                                            {% for item in privacy_list %}
+                                                <li>{{ item[0] }}: {{ item[1] }}</li>
+                                            {% endfor %}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header"><i class="fa fa-line-chart icon"></i>社交网络</div>
+                        <div class="layui-card-body" id="echart-pie-test">
+                            <div id="echarts-relation" style="width: 1000px; height:600px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md4">
+
+            <div class="layui-card">
+                <div class="layui-card-header"><i class="fa fa-bar-chart icon icon-tip"></i>数据统计</div>
+                <div class="layui-card-body layui-text">
+                    <div id="echarts-pies" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>
+                    <div class="layuimini-notice" id="信息概览">
+                        <p class="layuimini-notice-title">信息概览:共有229条信息</p>
+                        <p class="layuimini-notice-title">文本信息:共有35条风险博文,80条安全博文</p>
+                        <p class="layuimini-notice-title">图像信息:共有24条风险图像,90条安全图像</p>
+                    </div>
+                </div>
+            </div>
+            <div class="new-card">
+                <div class="layui-card-header"><i class="fa fa-fire icon"></i>搜索用户</div>
+                <div class="layui-card-body layui-text">
+                    <div class="box">
+                        <form>
+                            <input type="text" class="input" placeholder="  用户名" id="search">
+                            <!--placeholder是文本框中的提示文字-->
+                            <input type="submit" value="搜索" class="button">
+                        </form>
+                        <br>
+                        <fieldset>
+                            <legend>请选择检测范围：</legend>
+                            <div>
+                                <input type="checkbox" id="是否选择文本" name="是否选择文本" checked/>
+                                <label for="是否选择文本">是否选择文本</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="是否选择图像" name="是否选择图像" checked/>
+                                <label for="是否选择图像">是否选择图像</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="是否选择社交网络" name="是否选择社交网络" checked/>
+                                <label for="是否选择社交网络">是否选择社交网络</label>
+                            </div>
+                        </fieldset>
+                        <div id="search-result">
+                            <div id="name"></div>
+                            <div id="text-in"></div>
+                            <div id="graph-in"></div>
+                            <div id="society-in"></div>
+                            <!--分别是下面script中的nameResult、text_in、graph_in、society_in-->
+                        </div>
+                        <!--这个script只是一个在本地页面显示的例子，可以放到更下面的div下，根据我的格式往html网页里填写表单内容即可-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
