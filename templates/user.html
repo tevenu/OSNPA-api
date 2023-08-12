@@ -53,9 +53,9 @@
                 <div class="layui-card-body layui-text">
                     <div id="echarts-pies" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>
                     <div class="layuimini-notice" id="信息概览">
-                        <p class="layuimini-notice-title">信息概览:共有229条信息</p>
-                        <p class="layuimini-notice-title">文本信息:共有35条风险博文,80条安全博文</p>
-                        <p class="layuimini-notice-title">图像信息:共有24条风险图像,90条安全图像</p>
+                        <p class="layuimini-notice-title">博文概览:本系统一共分析{{ counts[0] }}条博文</p>
+                        <p class="layuimini-notice-title">风险信息:共有{{ counts[1] }}条风险博文,{{ counts[2] }}条安全博文</p>
+{#                        <p class="layuimini-notice-title">图像信息:共有24条风险图像,90条安全图像</p>#}
                     </div>
                 </div>
             </div>

@@ -21,29 +21,47 @@ def get_data():
           "FROM weibo.user WHERE screen_name = %s"
     val = [user]
     cur.execute(sql, val)
-    data = cur.fetchall()
+    data = cur.fetchone()
     profile = {
-        'name': data[0][0],
-        'followers': data[0][1],
-        'follow': data[0][2],
-        'verification': data[0][3],
-        'avatar': data[0][4],
+        'name': data[0],
+        'followers': data[1],
+        'follow': data[2],
+        'verification': data[3],
+        'avatar': data[4],
     }
     sql = "SELECT privacy_class, privacy_value " \
           "FROM weibo.privacy WHERE userid IN (SELECT id FROM weibo.user where screen_name=%s);"
     cur.execute(sql, val)
     privacy_list = cur.fetchall()
+    sql = "SELECT " \
+          "SUM(CASE WHEN screen_name = %s THEN 1 ELSE 0 END) AS blog_count," \
+          "SUM(CASE WHEN screen_name = %s AND isValid = 1 THEN 1 ELSE 0 END) AS privacy_count, " \
+          "SUM(CASE WHEN screen_name = %s AND isValid = 0 THEN 1 ELSE 0 END) AS non_privacy_count " \
+          "FROM weibo.weibo;"
+    val = [user, user, user]
+    cur.execute(sql, val)
+    counts = cur.fetchone()
     cur.close()
-    html_content = render_template('user.html', profile=profile, privacy_list=privacy_list)
+    html_content = render_template('user.html', profile=profile, privacy_list=privacy_list, counts=counts)
     return html_content
 
 
 @app.route('/count', methods=['GET'])
 def get_count():
+    user = request.args.get('user')
+    cur = mysql.connection.cursor()
+    sql = "SELECT " \
+          "SUM(CASE WHEN screen_name = %s THEN 1 ELSE 0 END) AS blog_count," \
+          "SUM(CASE WHEN screen_name = %s AND isValid = 1 THEN 1 ELSE 0 END) AS privacy_count, " \
+          "SUM(CASE WHEN screen_name = %s AND isValid = 0 THEN 1 ELSE 0 END) AS non_privacy_count " \
+          "FROM weibo.weibo;"
+    val = [user, user, user]
+    cur.execute(sql, val)
+    result = cur.fetchone()
     data = {
         "data": [
-            {"value": 35, "name": "安全博文"},
-            {"value": 80, "name": "风险博文"}
+            {"value": result[2], "name": "安全博文"},
+            {"value": result[1], "name": "风险博文"}
         ]
     }
     return jsonify(data)
