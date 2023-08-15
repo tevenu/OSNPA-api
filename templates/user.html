@@ -4,35 +4,29 @@
             <div class="layui-row layui-col-space15">
                 <div class="layui-col-md12">
                     <div class="layui-card" style="background-color: rgb(248, 252, 242);">
-                        <div class="layui-card-header"
-                             style="text-align: center; color: rgb(14, 88, 40); font-size: 25px;">微博社交平台隐私泄露风险警示系统
-                        </div>
-                        <div class="layui-card-body">
-                            <div class="layui-row layui-col-space10 layuimini-qiuck">
-                                <div class="layui-col-md6">
-                                    <div class="image-container" id="头像">
-                                        <img src="images/{{ profile.avatar }}" alt="图片">
-                                    </div>
-                                    <div class="image-caption" id="主页信息">
-                                        <p id="profile">
-                                            {{ profile.name }}<br>
-                                            {{ profile.verification }}<br>
-                                            粉丝：{{ profile.followers }}<br>
-                                            关注：{{ profile.follow }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="layui-col-md6" style="margin-top: 20px;" id="隐私信息">
-                                    <ul>
-                                        <li>
-                                            {% for item in privacy_list %}
-                                                <li>{{ item[0] }}: {{ item[1] }}</li>
-                                            {% endfor %}
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="custom-container">  
+                            <div class="custom-card-header">微博社交平台隐私泄露风险警示系统</div>  
+                            <div class="custom-card-body">  
+                                <div class="custom-image-container" id="头像">  
+                                    <img src="images/{{ profile.avatar }}" alt="图片">  
+                                </div>  
+                                <div class="custom-image-caption" id="主页信息">  
+                                    <p id="profile">  
+                                        {{ profile.name }}<br>  
+                                        {{ profile.verification }}<br>  
+                                        粉丝：{{ profile.followers }}<br>  
+                                        关注：{{ profile.follow }}  
+                                    </p>  
+                                </div>  
+                                <div class="custom-privacy-info" id="隐私信息">  
+                                    <ul>  
+                                        {% for item in privacy_list %}  
+                                            <li>{{ item[0] }}: {{ item[1] }}</li>  
+                                        {% endfor %}  
+                                    </ul>  
+                                </div>  
+                            </div>  
+                        </div>  
                     </div>
                 </div>
                 <div class="layui-col-md12">
