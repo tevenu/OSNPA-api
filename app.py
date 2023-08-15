@@ -22,6 +22,7 @@ def get_data():
     val = [user]
     cur.execute(sql, val)
     data = cur.fetchone()
+    print(data)
     profile = {
         'name': data[0],
         'followers': data[1],
@@ -71,7 +72,7 @@ def get_count():
 def get_text():
     user = request.args.get('user')
     cur = mysql.connection.cursor()
-    sql = "SELECT screen_name, created_at, text, isValid FROM weibo.weibo where screen_name=%s;"
+    sql = "SELECT screen_name, created_at, text, isPrivacy FROM weibo.weibo where screen_name=%s;"
     val = [user]
     cur.execute(sql, val)
     data = cur.fetchall()
@@ -88,6 +89,19 @@ def get_text():
         }
         output_data.append(output_item)
     return jsonify(output_data)
+
+
+users = ['余霜YSCandice', '空中的士马宏', '我是F1兵哥', '拓树成林']
+
+
+@app.route('/search')
+def search():
+    keyword = request.args.get('keyword', '').strip()
+    if not keyword:
+        return jsonify([])  # 返回空列表表示没有匹配项
+
+    matched_users = [user for user in users if user.startswith(keyword)]
+    return jsonify(matched_users)
 
 
 if __name__ == '__main__':
