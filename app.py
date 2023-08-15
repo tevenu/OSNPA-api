@@ -78,11 +78,15 @@ def get_text():
     output_data = []
     for item in data:
         id_, time, text, is_privacy = item
+        image = 'images/yushuang/p1.png'
+        #改一下，正常需要从item中取
+        
         formatted_time = time.strftime('%Y-%m-%d %H:%M:%S')
         output_item = {
             "id": id_,
             "time": formatted_time,
             "text": text,
+            "image": image,
             "is_privacy": is_privacy,
             "information": "information"
         }
