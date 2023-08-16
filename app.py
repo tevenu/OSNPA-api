@@ -106,6 +106,7 @@ def get_text():
         val.append(f"%{text_content}%")
     if is_privacy:
         conditions.append("isPrivacy = %s")
+        is_privacy = 1 if is_privacy == "是" else 0
         val.append(is_privacy)
     if privacy_info:
         conditions.append("privacy LIKE %s")
@@ -122,6 +123,7 @@ def get_text():
 
     for item in data:
         id_, time, text, image, is_privacy, privacy = item
+        is_privacy = "是" if is_privacy else "否"
         formatted_time = time.strftime('%Y-%m-%d %H:%M:%S')
         if image:
             image = "images/%s/%s" % (id_, image)
