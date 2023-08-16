@@ -36,8 +36,8 @@ def get_data():
     privacy_list = cur.fetchall()
     sql = "SELECT " \
           "SUM(CASE WHEN screen_name = %s THEN 1 ELSE 0 END) AS blog_count," \
-          "SUM(CASE WHEN screen_name = %s AND isValid = 1 THEN 1 ELSE 0 END) AS privacy_count, " \
-          "SUM(CASE WHEN screen_name = %s AND isValid = 0 THEN 1 ELSE 0 END) AS non_privacy_count " \
+          "SUM(CASE WHEN screen_name = %s AND isPrivacy = 1 THEN 1 ELSE 0 END) AS privacy_count, " \
+          "SUM(CASE WHEN screen_name = %s AND isPrivacy = 0 THEN 1 ELSE 0 END) AS non_privacy_count " \
           "FROM weibo.weibo;"
     val = [user, user, user]
     cur.execute(sql, val)
