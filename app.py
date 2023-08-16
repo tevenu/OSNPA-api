@@ -53,8 +53,8 @@ def get_count():
     cur = mysql.connection.cursor()
     sql = "SELECT " \
           "SUM(CASE WHEN screen_name = %s THEN 1 ELSE 0 END) AS blog_count," \
-          "SUM(CASE WHEN screen_name = %s AND isValid = 1 THEN 1 ELSE 0 END) AS privacy_count, " \
-          "SUM(CASE WHEN screen_name = %s AND isValid = 0 THEN 1 ELSE 0 END) AS non_privacy_count " \
+          "SUM(CASE WHEN screen_name = %s AND isPrivacy = 1 THEN 1 ELSE 0 END) AS privacy_count, " \
+          "SUM(CASE WHEN screen_name = %s AND isPrivacy = 0 THEN 1 ELSE 0 END) AS non_privacy_count " \
           "FROM weibo.weibo;"
     val = [user, user, user]
     cur.execute(sql, val)
@@ -72,24 +72,26 @@ def get_count():
 def get_text():
     user = request.args.get('user')
     cur = mysql.connection.cursor()
-    sql = "SELECT screen_name, created_at, text, isPrivacy FROM weibo.weibo where screen_name=%s;"
+    sql = "SELECT screen_name, created_at, text, pics, isPrivacy, privacy " \
+          "FROM weibo.weibo where screen_name=%s ORDER BY created_at DESC;"
     val = [user]
     cur.execute(sql, val)
     data = cur.fetchall()
     output_data = []
     for item in data:
-        id_, time, text, is_privacy = item
-        image = 'images/yushuang/p1.png'
-        #改一下，正常需要从item中取
-        
+        id_, time, text, image, is_privacy, privacy = item
         formatted_time = time.strftime('%Y-%m-%d %H:%M:%S')
+        if image:
+            image = "images/%s/%s" % (id_, image)
+        else:
+            image = ''
         output_item = {
             "id": id_,
             "time": formatted_time,
             "text": text,
             "image": image,
             "is_privacy": is_privacy,
-            "information": "information"
+            "information": privacy
         }
         output_data.append(output_item)
     return jsonify(output_data)
