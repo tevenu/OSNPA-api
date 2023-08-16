@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 from flask_mysqldb import MySQL
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -71,13 +72,54 @@ def get_count():
 @app.route('/text', methods=['GET'])
 def get_text():
     user = request.args.get('user')
+    search_params = request.args.get('searchParams')
+    params = json.loads(search_params)  # 解析 JSON 数据
+
+    is_privacy = params.get('是否隐私')
+    publish_time = params.get('发布时间')
+    text_content = params.get('文本内容')
+    privacy_info = params.get('隐私信息')
+
     cur = mysql.connection.cursor()
+
+    # 构建基础的 SQL 查询语句
     sql = "SELECT screen_name, created_at, text, pics, isPrivacy, privacy " \
-          "FROM weibo.weibo where screen_name=%s ORDER BY created_at DESC;"
+          "FROM weibo.weibo WHERE screen_name=%s"
+
+    # 根据搜索条件添加相应的过滤条件
+    conditions = []
     val = [user]
+    if publish_time:
+        publish_parts = publish_time.split('-')
+        if len(publish_parts) == 1:
+            conditions.append("YEAR(created_at) = %s")  # 匹配年份
+        elif len(publish_parts) == 2:
+            conditions.append("YEAR(created_at) = %s")
+            conditions.append("MONTH(created_at) = %s")  # 匹配年月
+        elif len(publish_parts) == 3:
+            conditions.append("YEAR(created_at) = %s")
+            conditions.append("MONTH(created_at) = %s")
+            conditions.append("DAY(created_at) = %s")  # 匹配年月日
+        val.extend(publish_parts)
+    if text_content:
+        conditions.append("text LIKE %s")
+        val.append(f"%{text_content}%")
+    if is_privacy:
+        conditions.append("isPrivacy = %s")
+        val.append(is_privacy)
+    if privacy_info:
+        conditions.append("privacy LIKE %s")
+        val.append(f"%{privacy_info}%")
+
+    if conditions:
+        sql += " AND " + " AND ".join(conditions)
+
+    sql += " ORDER BY created_at DESC;"
+
     cur.execute(sql, val)
     data = cur.fetchall()
     output_data = []
+
     for item in data:
         id_, time, text, image, is_privacy, privacy = item
         formatted_time = time.strftime('%Y-%m-%d %H:%M:%S')
@@ -94,6 +136,7 @@ def get_text():
             "information": privacy
         }
         output_data.append(output_item)
+
     return jsonify(output_data)
 
 
