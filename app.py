@@ -142,7 +142,7 @@ def get_text():
     return jsonify(output_data)
 
 
-users = ['余霜YSCandice', '空中的士马宏', '我是F1兵哥', '拓树成林']
+users = ['余霜YSCandice', '空中的士马宏', '我是F1兵哥', '拓树成林', '余霜的小老婆', '余霜小粉儿', '余霜_sea']
 
 
 @app.route('/search')
