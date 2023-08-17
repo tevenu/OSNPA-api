@@ -32,7 +32,7 @@ def get_data():
         'avatar': data[4],
     }
     sql = "SELECT privacy_class, privacy_value " \
-          "FROM weibo.privacy WHERE userid IN (SELECT id FROM weibo.user where screen_name=%s);"
+          "FROM weibo.INFO WHERE screen_name=%s;"
     cur.execute(sql, val)
     privacy_list = cur.fetchall()
     sql = "SELECT " \
